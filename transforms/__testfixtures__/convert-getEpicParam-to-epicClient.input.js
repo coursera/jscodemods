@@ -5,8 +5,12 @@ class Something extends React.Component {
     getEpicParam: React.PropTypes.func.isRequired
   }
 
-  render() {
+  render () {
     const x = this.context.getEpicParam('Test', 'test');
+    if (x) {
+      return false;
+    }
+
     return false;
   }
 }

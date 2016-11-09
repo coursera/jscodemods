@@ -1,12 +1,12 @@
 'use strict';
 
-module.exports = function transformer(file, api) {
+module.exports = function transformer (file, api) {
   const j = api.jscodeshift;
 
   let replacementsMade = false;
   let EPIC_CLIENT_MODULE_PATH = 'bundles/epic/client';
 
-  function getRequireLiteral(variableDeclaration) {
+  function getRequireLiteral (variableDeclaration) {
     let require;
     j(variableDeclaration)
       .find(j.Literal)
@@ -18,7 +18,7 @@ module.exports = function transformer(file, api) {
     return require;
   }
 
-  function smartInsertRequire(ast, name, modulePath) {
+  function smartInsertRequire (ast, name, modulePath) {
     // All react components have variable declarations since they must
     // require 'React'. We can assume a variable declaration requiring
     // something will exist in the file.
@@ -29,7 +29,7 @@ module.exports = function transformer(file, api) {
 
     // Find index to insert require node at.
     let epicClientInsertAfterIndex = 0;
-    for(let i = 0; i < requirePaths.length; i++) {
+    for (let i = 0; i < requirePaths.length; i++) {
       const prev = getRequireLiteral(requirePaths[i]);
       if (prev < EPIC_CLIENT_MODULE_PATH) {
         epicClientInsertAfterIndex = i;
@@ -50,7 +50,7 @@ module.exports = function transformer(file, api) {
             )
           )
         ]
-      ))
+      ));
   }
 
   const ast = j(file.source);
@@ -65,7 +65,7 @@ module.exports = function transformer(file, api) {
           j.memberExpression(j.identifier('epic'), j.identifier('get')),
           path.value.arguments
         )
-      )
+      );
 
       replacementsMade = true;
       return path;
@@ -105,4 +105,4 @@ module.exports = function transformer(file, api) {
     reuseWhitespace: false,
     trailingCommas: false
   });
-}
+};

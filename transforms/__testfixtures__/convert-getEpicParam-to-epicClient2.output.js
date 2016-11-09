@@ -6,8 +6,11 @@ class Something extends React.Component {
     router: React.PropTypes.object
   }
 
-  render() {
+  render () {
     const x = epic.get('Test', 'test');
+    if (x) {
+      return false;
+    }
     return false;
   }
 }
